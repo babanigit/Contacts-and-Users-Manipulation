@@ -1,27 +1,23 @@
 const express = require("express");
-const router = express.Router();
+const aniketRouter = express.Router();
 
-const Contact = require("../model/ContactModel")
+// const Contact = require("../model/ContactModel")
+const {
+  getContact,
+  createContact,
+  updateContact,
+  deleteContact,
+  getContacts,
+} = require("../controller/ContactController");
 
-router.route("/").get((req, res) => {
-  res.status(200).json({ message: "get all contacts " });
-});
+aniketRouter.route("/").get(getContacts);
 
+aniketRouter.route("/").post(createContact);
 
-router.route("/").post( async (req, res) => {
-  res.status(200).json({ message: "create contacts " })
-});
+aniketRouter.route("/:id").get(getContact);
 
-router.route("/:id").get((req, res) => {
-    res.status(200).json({ message: `get contact from ${req.params.id}  `});
-  });
+aniketRouter.route("/:id").put(updateContact);
 
-router.route("/:id").put((req, res) => {
-  res.status(200).json({ message: `update contact from ${req.params.id}  `});
-});
+aniketRouter.route("/:id").delete(deleteContact);
 
-router.route("/:id").delete((req, res) => {
-  res.status(200).json({ message: `delete contacts from ${req.params.id} ` });
-});
-
-module.exports = router;
+module.exports = aniketRouter;

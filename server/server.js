@@ -10,8 +10,8 @@ app.use(express.json()); // this will enable us to use 'json' formatted data
 
 const port = process.env.PORT || 5000;
 
-
-
+// all routing methods are here
+// into ContactRoutes
 app.use("/api/contacts", require("./routes/ContactRoutes"));
 
 
@@ -19,7 +19,6 @@ app.get("/", (req, res) => {
   res.send(`Hello World! on port ${port} `);
    
 });
-
 
 // get request from postman and return response to postman 
 app.post("/trail",   async(req,res)=> {
