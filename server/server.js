@@ -1,9 +1,16 @@
-const express = require("express");
-const app = express();
-app.use(express.json()); // this will enable us to use 'json' formatted data
 const dotenv = require("dotenv").config({ path: "./config.env" }); // just use it one time in index.js and no need to initialize it again and again
 
-const port = process.env.PORT || 5001;
+const express = require("express");
+const app = express();
+
+const connectDb= require("./config/DBconnection");
+connectDb();
+
+app.use(express.json()); // this will enable us to use 'json' formatted data
+
+const port = process.env.PORT || 5000;
+
+
 
 app.use("/api/contacts", require("./routes/ContactRoutes"));
 
@@ -21,7 +28,7 @@ app.post("/trail",   async(req,res)=> {
     const { name , email } = await req.body;
     res.json({message:`response from trail route ${name} and ${email} `})
     // res.send(`${name} and ${email}  `)
-    console.log("hello")
+    console.log("request came from /trail from postman")
     // console.log(req.body)
     
   } catch (error) {
