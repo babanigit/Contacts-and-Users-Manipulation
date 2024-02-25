@@ -12,7 +12,15 @@ const getContacts = async (req, res) => {
 // @routes POST/api/contacts
 // @access public
 const createContact = async (req, res) => {
-  res.status(201).json({ message: "create contacts " });
+  
+    const {name,email,phone} = req.body;
+    if (!name||!email||!phone) {
+        res.status(400).json({message:"all filed required"})
+        // res.status(400);
+        // throw new Error("all filed  are mandatory");
+    }else {
+        res.status(201).json({ message: "create contacts " });
+    }
 };
 
 // @desc get all contacts
