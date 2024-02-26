@@ -13,15 +13,20 @@ connectDb();
 
 var errorHandler = require("./middleware/errorHandler")
 
-app.use("/api/contacts", require("./routes/ContactRoutes")); // all routing methods are here
+app.use("/api/contacts", require("./routes/ContactRoutes"));
+app.use("/api/user",require("./routes/UserRoutes"))
 app.use(errorHandler);
 
 
 // demo
 app.get("/", (req, res) => {
   res.send(`Hello World! on port ${port} `);
-   
 });
+
+app.post("/", (req, res) => {
+  res.json({message:`Hello World! on port ${port} `})
+});
+
 // demo2
 app.post("/api/:id", async (req,res)=> {
   const { key, apiName } = await req.body;
@@ -38,12 +43,12 @@ app.post("/trail",   async(req,res)=> {
     // res.send(`${name} and ${email}  `)
     console.log("request came from /trail from postman")
     // console.log(req.body)
-    
   } catch (error) {
     console.error(error)
   }
- 
-} );
+});
+
+
 
 // listen method
 app.listen(port, () => {
