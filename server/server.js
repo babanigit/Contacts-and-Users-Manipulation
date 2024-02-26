@@ -3,10 +3,9 @@ const express = require("express");
 const app = express();
 app.use(express.json()); // this will enable us to use 'json' formatted data
 
-const dotenv = require("dotenv").config({ path: "./config.env" }); // just use it one time in index.js and no need to initialize it again and again
+const dotenv = require("dotenv").config({ path: "./.env" }); // just use it one time in index.js and no need to initialize it again and again
 
 const port = process.env.PORT || 5000;
-
 
 const connectDb= require("./config/DBconnection"); //mongoose connection
 connectDb();
