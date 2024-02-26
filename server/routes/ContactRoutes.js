@@ -10,6 +10,10 @@ const {
   getContacts,
 } = require("../controller/ContactController");
 
+
+const validateToken = require("../middleware/vlidateTokenHandler")
+aniketRouter.use(validateToken)
+
 aniketRouter.route("/").get(getContacts);
 
 aniketRouter.route("/").post(createContact);

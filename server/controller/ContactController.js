@@ -6,16 +6,16 @@ const Contact = require("../model/ContactModel");
 
 // @desc get all contacts
 // @routes GET/api/contacts
-// @access public
+// @access private
 const getContacts = asyncHandler(async (req, res) => {
-  const contacts = await Contact.find();
+  const contacts = await Contact.find({ user_id: req.user.id });
 
   res.status(200).json(contacts);
 });
 
 // @desc Create new  contacts
 // @routes POST/api/contacts
-// @access public
+// @access private
 const createContact = asyncHandler(async (req, res) => {
   try {
     const { name, email, phone } = await req.body;
@@ -28,6 +28,7 @@ const createContact = asyncHandler(async (req, res) => {
         name,
         email,
         phone,
+        user_id: req.user.id,
       });
       res.status(201).json(contact);
     }
@@ -38,7 +39,7 @@ const createContact = asyncHandler(async (req, res) => {
 
 // @desc get all contacts
 // @routes GET/api/contacts/:id
-// @access public
+// @access private
 const getContact = asyncHandler(async (req, res) => {
   const contact = await Contact.findById(req.params.id);
   if (!contact) {
@@ -50,34 +51,49 @@ const getContact = asyncHandler(async (req, res) => {
 
 // @desc update contacts
 // @routes PUT/api/contacts/:id
-// @access public
+// @access private
 const updateContact = asyncHandler(async (req, res) => {
   const contact = await Contact.findById(req.params.id);
   if (!contact) {
     res.status(404).json({ message: " contact not found" });
   } else {
-    const updateContact = await Contact.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-    res.status(200).json(updateContact);
+    if (contact.user_id.toSting() != req.user.id) {
+      res
+        .status(403)
+        .json({
+          message: "user dont have permission update other user contacts",
+        });
+    } else {
+      const updateContact = await Contact.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true }
+      );
+      res.status(200).json(updateContact);
+    }
   }
 });
 
 // @desc delete contacts
 // @routes DELETE/api/contacts/:id
-// @access public
+// @access private
 const deleteContact = asyncHandler(async (req, res) => {
   try {
     const contact = await Contact.findById(req.params.id);
     if (!contact) {
       res.status(404).json({ message: " contact not found" });
+    } else {
+      if (contact.user_id.toSting() != req.user.id) {
+        res
+          .status(403)
+          .json({
+            message: "user dont have permission update other user contacts",
+          });
+      } else {
+        await Contact.deleteOne({ _id: req.params.id });
+        res.status(200).json(contact);
+      }
     }
-
-    await Contact.deleteOne();
-
-    res.status(200).json(contact);
   } catch (error) {
     console.error(error);
   }
