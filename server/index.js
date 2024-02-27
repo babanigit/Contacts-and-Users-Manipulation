@@ -53,3 +53,6 @@ app.post("/trail",   async(req,res)=> {
 app.listen(port, () => {
   console.log(`server started on port ${port} `);
 });
+
+// Export the Express API
+module.exports = app;
