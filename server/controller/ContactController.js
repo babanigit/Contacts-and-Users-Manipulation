@@ -11,6 +11,7 @@ const getContacts = asyncHandler(async (req, res) => {
   const contacts = await Contact.find({ user_id: req.user.id });
 
   res.status(200).json(contacts);
+  console.log(contacts)
 });
 
 // @desc Create new  contacts
@@ -57,7 +58,7 @@ const updateContact = asyncHandler(async (req, res) => {
   if (!contact) {
     res.status(404).json({ message: " contact not found" });
   } else {
-    if (contact.user_id.toSting() != req.user.id) {
+    if (contact.user_id.toString() != req.user.id) {
       res
         .status(403)
         .json({

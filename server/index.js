@@ -10,11 +10,11 @@ const port = process.env.PORT || 5000;
 const connectDb= require("./config/DBconnection"); //mongoose connection
 connectDb();
 
-var errorHandler = require("./middleware/errorHandler")
+// var errorHandler = require("./middleware/errorHandler")
 
 app.use("/api/contacts", require("./routes/ContactRoutes"));
 app.use("/api/user",require("./routes/UserRoutes"))
-app.use(errorHandler);
+// app.use(errorHandler);
 
 
 // demo
