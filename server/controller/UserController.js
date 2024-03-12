@@ -23,6 +23,9 @@ const registerUser = asyncHandler(async (req, res) => {
           .status(400)
           .json({ message: `user ${email} is already registered  ` });
       } else {
+
+
+        // create hashedPassword
         const hashedPassword = await bcrypt.hash(password, 10);
         console.log("hashPassword is : " + hashedPassword);
 
@@ -40,6 +43,8 @@ const registerUser = asyncHandler(async (req, res) => {
         }
 
         res.status(201).json({ message: " created" });
+
+        
       }
     }
   } catch (error) {
@@ -59,7 +64,11 @@ const loginUser = asyncHandler(async (req, res) => {
     } else {
 
       const user = await User.findOne({ email });
+
+      // compare with the both hashed password
       if (user && (await bcrypt.compare(password, user.password))) {
+
+        // generate Token
         const accessToken = jwt.sign(
           {
             user: {
@@ -73,6 +82,7 @@ const loginUser = asyncHandler(async (req, res) => {
         );
 
         res.status(200).json({ accessToken });
+
       } else {
         res.status(401).json({ message: "email or password is invalid" });
       }
@@ -89,7 +99,10 @@ const loginUser = asyncHandler(async (req, res) => {
 // @routes GET /api/user/current
 // @access private
 const currentUser = asyncHandler(async (req, res) => {
-  res.json(req.user);
+  res.json({
+    message:"contact user",
+    user: req.user
+  });
 });
 
 module.exports = { registerUser, loginUser, currentUser };
